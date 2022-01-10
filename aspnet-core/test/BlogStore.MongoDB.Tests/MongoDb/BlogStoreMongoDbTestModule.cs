@@ -13,9 +13,9 @@ namespace BlogStore.MongoDB
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var stringArray = BlogStoreMongoDbFixture.ConnectionString.Split('?');
-                        var connectionString = stringArray[0].EnsureEndsWith('/')  +
-                                                   "Db_" +
-                                               Guid.NewGuid().ToString("N") + "/?" + stringArray[1];
+            var connectionString = stringArray[0].EnsureEndsWith('/') +
+                                       "Db_" +
+                                   Guid.NewGuid().ToString("N") + "/?" + stringArray[1];
 
             Configure<AbpDbConnectionOptions>(options =>
             {

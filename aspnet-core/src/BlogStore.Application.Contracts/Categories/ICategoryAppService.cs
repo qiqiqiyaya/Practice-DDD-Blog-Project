@@ -5,6 +5,6 @@ namespace BlogStore.Categories
 {
     public interface ICategoryAppService: IApplicationService
     {
-        Task<bool> CreateAsync(CreateCategoryDto dto);
+        Task<CategoryDto> CreateAsync(CreateCategoryDto dto);
     }
 }

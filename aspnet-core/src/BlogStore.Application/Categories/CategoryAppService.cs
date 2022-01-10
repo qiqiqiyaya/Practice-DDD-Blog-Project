@@ -10,7 +10,7 @@ namespace BlogStore.Categories
             _categoryManager = categoryManager;
         }
 
-        public async Task<bool> CreateAsync(CreateCategoryDto dto)
+        public async Task<CategoryDto> CreateAsync(CreateCategoryDto dto)
         {
             var category = dto.ParentId.HasValue
                 ? Category.Create(dto.Title, dto.ParentId.Value)
@@ -20,7 +20,14 @@ namespace BlogStore.Categories
             category.SetMetaTitle(dto.MetaTitle);
             category.SetSlug(dto.Slug);
 
-            return await _categoryManager.CreateAsync(category);
+            var result= await _categoryManager.CreateAsync(category);
+            return ObjectMapper.Map<Category, CategoryDto>(result);
+        }
+
+        public async Task<CategoryDto> GetAsync(long id)
+        {
+             var result= await _categoryManager.GetAsync(id);
+             return ObjectMapper.Map<Category, CategoryDto>(result);
         }
     }
 }

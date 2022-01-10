@@ -13,7 +13,7 @@ namespace BlogStore.Categories
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<bool> CreateAsync(Category category)
+        public async Task<Category> CreateAsync(Category category)
         {
             // Whether there is a category with same title.
             if (await _categoryRepository.AnyAsync(x => x.Title == category.Title))
@@ -22,13 +22,18 @@ namespace BlogStore.Categories
             }
 
             // Whether there is a category with give id.
-            if (await _categoryRepository.AnyAsync(x => x.Id == category.ParentId))
+            if (category.ParentId.HasValue &&
+                !await _categoryRepository.AnyAsync(x => x.Id == category.ParentId))
             {
                 throw new BusinessException(BlogStoreDomainErrorCodes.CategoryNotExistsParent, "The parent category does not exists.");
             }
 
-            await _categoryRepository.InsertAsync(category);
-            return true;
+            return await _categoryRepository.InsertAsync(category);
+        }
+
+        public async Task<Category> GetAsync(long id)
+        {
+            return await _categoryRepository.GetAsync(id);
         }
     }
 }

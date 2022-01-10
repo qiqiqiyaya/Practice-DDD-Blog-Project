@@ -10,7 +10,7 @@ namespace BlogStore.Categories
 {
     public class Category : FullAuditedAggregateRoot<long>, IMultiTenant
     {
-        public long ParentId { get; private set; }
+        public long? ParentId { get; private set; }
 
         /// <summary>
         /// The category must have title.
@@ -58,6 +58,7 @@ namespace BlogStore.Categories
                 Title = title,
             };
             entity.SetMetaTitle(title);
+            entity.SetSlug(title);
             return entity;
         }
 

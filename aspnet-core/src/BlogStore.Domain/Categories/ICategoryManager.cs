@@ -4,6 +4,8 @@ namespace BlogStore.Categories
 {
     public interface ICategoryManager
     {
-        Task<bool> CreateAsync(Category category);
+        Task<Category> CreateAsync(Category category);
+
+        Task<Category> GetAsync(long id);
     }
 }

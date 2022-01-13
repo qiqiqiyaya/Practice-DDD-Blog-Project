@@ -3,8 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlogStore.Categories
 {
-    public class CreateCategoryDto
+    public class UpdateCategoryDto
     {
+        [Required]
+        [Range(1,long.MaxValue)]
+        public Guid Id { get; set; }
+        
         public Guid? ParentId { get; set; }
 
         [Required(AllowEmptyStrings = !CategoryConsts.TitleRequired)]

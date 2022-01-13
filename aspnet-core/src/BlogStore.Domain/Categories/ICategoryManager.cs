@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace BlogStore.Categories
 {
@@ -6,6 +7,8 @@ namespace BlogStore.Categories
     {
         Task<Category> CreateAsync(Category category);
 
-        Task<Category> GetAsync(long id);
+        Task<Category> GetAsync(Guid id);
+
+        Task<Category> UpdateAsync(Category category);
     }
 }

@@ -15,6 +15,7 @@
         public const string CategoryMustHaveTitle = "BlogStore.Posts:00007";
         public const string CategoryAlreadyExistsSameTitle = "BlogStore.Posts:00008";
         public const string CategoryNotExistsParent = "BlogStore.Posts:00009";
+        public const string CategorySlugRequired = "BlogStore.Posts:000010";
 
     }
 }

@@ -1,16 +1,15 @@
-﻿using System;
-using BlogStore.Helper;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using System;
+using BlogStore.Domain.Utils;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
-using Volo.Abp.Validation;
 
 namespace BlogStore.Categories
 {
-    public class Category : FullAuditedAggregateRoot<long>, IMultiTenant
+    public class Category : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
-        public long? ParentId { get; private set; }
+        public Guid? ParentId { get; private set; }
 
         /// <summary>
         /// The category must have title.
@@ -46,36 +45,55 @@ namespace BlogStore.Categories
 
         }
 
-        public static Category Create([NotNull] string title)
+
+        public static Category Create(Guid id, [NotNull] string title, bool autoSetMetaTitle = true, bool autoSetSlug = true)
         {
+            Check.NotNull(id, nameof(id));
             if (string.IsNullOrWhiteSpace(title))
             {
-                throw new BusinessException(BlogStoreDomainErrorCodes.CategoryMustHaveTitle, "The category must have title.");
+                throw new UserFriendlyException(BlogStoreDomainErrorCodes.CategoryMustHaveTitle, "The category must have title.");
             }
 
             var entity = new Category()
             {
                 Title = title,
+                Id = id,
             };
-            entity.SetMetaTitle(title);
-            entity.SetSlug(title);
+
+            if (autoSetMetaTitle)
+            {
+                entity.AutoSetMetaTitle();
+            }
+
+            if (autoSetSlug)
+            {
+                entity.AutoSetSlug();
+            }
+
             return entity;
         }
 
-        public static Category Create([NotNull] string title, long parentId)
+        public static Category Create(Guid id, [NotNull] string title, Guid parentId, bool autoSetMetaTitle = true, bool autoSetSlug = true)
         {
-            var entity = Create(title);
+            var entity = Create(id, title,autoSetMetaTitle,autoSetSlug);
             entity.SetParentId(parentId);
             return entity;
         }
 
-        public void SetParentId(long parentId)
+        public void SetParentId(Guid parentId)
         {
-            if (parentId <= 0)
-            {
-                throw new ArgumentException("the id of parent post can not less than or equal zero.");
-            }
             ParentId = parentId;
+        }
+
+        public void SetTitle(string title)
+        {
+            Check.NotNull(title, nameof(title));
+            Title = title;
+        }
+
+        public void SetMetaTitle(string metaTitle)
+        {
+            MetaTitle = metaTitle;
         }
 
         /// <summary>
@@ -84,27 +102,30 @@ namespace BlogStore.Categories
         /// <remarks>
         /// default is Title.
         /// </remarks>
-        /// <param name="metaTitle"></param>
-        public void SetMetaTitle(string metaTitle)
+        public void AutoSetMetaTitle()
         {
-            // if not exists value , then will automatic set value.
-            if (string.IsNullOrWhiteSpace(metaTitle))
-            {
-                MetaTitle = Title;
-                return;
-            }
-            MetaTitle = metaTitle;
+            MetaTitle = Title;
         }
 
         public void SetSlug(string slug)
         {
-            // if not exists value , then will automatic set value.
             if (string.IsNullOrWhiteSpace(slug))
             {
-                Slug = SlugHelper.GenerateSlug(Title);
-                return;
+                throw new UserFriendlyException(BlogStoreDomainErrorCodes.CategorySlugRequired, "The slug is required.");
             }
-            Slug = slug;
+            
+            Slug = SlugHelper.GenerateSlug(slug);
+        }
+
+        /// <summary>
+        /// if not exists value , then will automatic set value.
+        /// </summary>
+        /// <remarks>
+        /// default is Title.
+        /// </remarks>
+        public void AutoSetSlug()
+        {
+            Slug = SlugHelper.GenerateSlug(Title);
         }
 
         public void SetContent(string content)

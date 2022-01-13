@@ -11,13 +11,13 @@ namespace BlogStore.Categories
     [Collection(BlogStoreTestConsts.CollectionDefinitionName)]
     public class CategoryAppServiceTest : BlogStoreApplicationTestBase
     {
-        private readonly IRepository<Category, long> _categoryRepository;
-        private readonly ICategoryAppService _userAppService;
+        private readonly IRepository<Category, Guid> _categoryRepository;
+        private readonly ICategoryAppService _categoryAppService;
 
         public CategoryAppServiceTest()
         {
-            _userAppService = GetRequiredService<ICategoryAppService>();
-            _categoryRepository = GetRequiredService<IRepository<Category, long>>();
+            _categoryAppService = GetRequiredService<ICategoryAppService>();
+            _categoryRepository = GetRequiredService<IRepository<Category, Guid>>();
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace BlogStore.Categories
             category.MetaTitle = null;
             category.Slug = null;
             
-            var result = await _userAppService.CreateAsync(category);
+            var result = await _categoryAppService.CreateAsync(category);
             result.MetaTitle.ShouldNotBeNull();
             result.Slug.ShouldNotBeNull();
             result.Title.ShouldNotBeNull();

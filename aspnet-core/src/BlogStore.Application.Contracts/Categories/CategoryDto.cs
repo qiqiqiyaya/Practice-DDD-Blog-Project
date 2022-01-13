@@ -1,10 +1,11 @@
-﻿using Volo.Abp.Application.Dtos;
+﻿using System;
+using Volo.Abp.Application.Dtos;
 
 namespace BlogStore.Categories
 {
-    public class CategoryDto : ExtensibleFullAuditedEntityDto<long>
+    public class CategoryDto : ExtensibleFullAuditedEntityDto<Guid>
     {
-        public long? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
 
         public string Title { get; set; }
 

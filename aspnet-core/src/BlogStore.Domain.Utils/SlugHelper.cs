@@ -1,8 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿using BlogStore.Domain.Utils.Pinyin;
+using System.Text.RegularExpressions;
+using System.Text;
 
-namespace BlogStore.Helper
+namespace BlogStore.Domain.Utils
 {
-    internal class SlugHelper
+    public class SlugHelper
     {
         /// <summary>
         /// Generate slug.
@@ -24,8 +26,25 @@ namespace BlogStore.Helper
 
         private static string RemoveAccent(string txt)
         {
-            byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(txt);
-            return System.Text.Encoding.ASCII.GetString(bytes);
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in txt)
+            {
+                if (IsChinese(c))
+                {
+                    sb.Append(PinYin.GetPinyin(c) + " ");
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+            byte[] bytes = Encoding.GetEncoding("Cyrillic").GetBytes(sb.ToString());
+            return Encoding.ASCII.GetString(bytes);
+        }
+
+        private static bool IsChinese(char txt)
+        {
+            return Regex.IsMatch(txt.ToString(), @"[\u4E00-\u9FA5]+$");
         }
     }
 }

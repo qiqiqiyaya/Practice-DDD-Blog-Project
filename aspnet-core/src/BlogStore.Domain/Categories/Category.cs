@@ -45,13 +45,12 @@ namespace BlogStore.Categories
 
         }
 
-
         public static Category Create(Guid id, [NotNull] string title, bool autoSetMetaTitle = true, bool autoSetSlug = true)
         {
             Check.NotNull(id, nameof(id));
             if (string.IsNullOrWhiteSpace(title))
             {
-                throw new UserFriendlyException(BlogStoreDomainErrorCodes.CategoryMustHaveTitle, "The category must have title.");
+                throw new UserFriendlyException(BlogStoreDomainErrorCodes.CategoryMustHaveTitle, "The title is required.");
             }
 
             var entity = new Category()

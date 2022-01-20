@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Guids;
 
@@ -32,13 +33,13 @@ namespace BlogStore.Categories
                 category.SetSlug(dto.Slug);
             }
 
-            var result= await _categoryManager.CreateAsync(category);
+            var result = await _categoryManager.CreateAsync(category);
             return ObjectMapper.Map<Category, CategoryDto>(result);
         }
 
         public async Task<CategoryDto> UpdateAsync(UpdateCategoryDto dto)
         {
-            var category =await _categoryManager.GetAsync(dto.Id);
+            var category = await _categoryManager.GetAsync(dto.Id);
             category.SetTitle(dto.Title);
             category.SetContent(dto.Content);
             if (dto.AutoSetMetaTitle)
@@ -64,14 +65,20 @@ namespace BlogStore.Categories
                 category.SetParentId(dto.ParentId.Value);
             }
 
-            var result= await _categoryManager.UpdateAsync(category);
+            var result = await _categoryManager.UpdateAsync(category);
             return ObjectMapper.Map<Category, CategoryDto>(result);
         }
 
         public async Task<CategoryDto> GetAsync(Guid id)
         {
-             var result= await _categoryManager.GetAsync(id);
-             return ObjectMapper.Map<Category, CategoryDto>(result);
+            var result = await _categoryManager.GetAsync(id);
+            return ObjectMapper.Map<Category, CategoryDto>(result);
+        }
+
+        public async Task<List<CategoryDto>> GetListAsync(GetCategoryListDto input)
+        {
+            var result = await _categoryManager.GetListAsync(input.SkipCount, input.MaxResultCount, input.Filter);
+            return ObjectMapper.Map<List<Category>, List<CategoryDto>>(result);
         }
     }
 }

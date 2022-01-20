@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using Volo.Abp.Application.Dtos;
 
 namespace BlogStore.Posts
 {
-    public class CreatePostDetailDto
+    public class CreateUpdatePostDetailDto : EntityDto<Guid>
     {
         [Required(AllowEmptyStrings = !PostDetailConsts.TitleRequired)]
         [StringLength(PostDetailConsts.TitleMaxStringLength)]

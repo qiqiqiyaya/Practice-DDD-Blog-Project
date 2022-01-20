@@ -12,7 +12,7 @@ namespace BlogStore.Posts
         public const bool ContentRequired = true;
         public const int ContentMaxStringLength = 50000;
 
-        public const int MetaTitleMaxStringLength = 50;
-        public const int SummaryMaxStringLength = 50;
+        public const int MetaTitleMaxStringLength = 100;
+        public const int SummaryMaxStringLength = 100;
     }
 }

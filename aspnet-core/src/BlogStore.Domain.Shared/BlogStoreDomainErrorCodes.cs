@@ -12,10 +12,14 @@
         public const string PostDetailMustHaveContent = "BlogStore.Posts:00005";
         public const string PostDetailMustHaveTitle = "BlogStore.Posts:00006";
 
-        public const string CategoryMustHaveTitle = "BlogStore.Posts:00007";
-        public const string CategoryAlreadyExistsSameTitle = "BlogStore.Posts:00008";
-        public const string CategoryNotExistsParent = "BlogStore.Posts:00009";
-        public const string CategorySlugRequired = "BlogStore.Posts:000010";
+        public const string CategoryMustHaveTitle = "BlogStore.Category:00007";
+        public const string CategoryAlreadyExistsSameTitle = "BlogStore.Category:00008";
+        public const string CategoryNotExistsParent = "BlogStore.Category:00009";
+        public const string CategorySlugRequired = "BlogStore.Category:000010";
+
+        public const string TagSlugRequired = "BlogStore.Tag:000011";
+        public const string TagTitleRequired = "BlogStore.Tag:000012";
+        public const string TagAlreadyExistsSameTitle = "BlogStore.Tag:000013";
 
     }
 }

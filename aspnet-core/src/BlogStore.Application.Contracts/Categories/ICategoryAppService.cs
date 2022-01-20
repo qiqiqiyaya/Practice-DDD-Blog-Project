@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 
 namespace BlogStore.Categories
@@ -8,5 +10,9 @@ namespace BlogStore.Categories
         Task<CategoryDto> CreateAsync(CreateCategoryDto dto);
 
         Task<CategoryDto> UpdateAsync(UpdateCategoryDto dto);
+
+        Task<CategoryDto> GetAsync(Guid id);
+
+        Task<List<CategoryDto>> GetListAsync(GetCategoryListDto input);
     }
 }

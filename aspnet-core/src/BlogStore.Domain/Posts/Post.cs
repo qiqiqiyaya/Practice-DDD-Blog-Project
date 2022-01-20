@@ -1,18 +1,17 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
-using Volo.Abp.Validation;
 
 namespace BlogStore.Posts
 {
-    public class Post : FullAuditedAggregateRoot<long>, IMultiTenant
+    public class Post : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
         public Guid AuthorId { get; private set; }
 
-        public long? ParentId { get; private set; }
+        public Guid? ParentId { get; private set; }
 
         /// <summary>
         /// the post slug to from the URL.
@@ -45,43 +44,29 @@ namespace BlogStore.Posts
         /// </summary>
         public PostMeta PostMeta { get; private set; }
 
-        protected Post()
+        public Post(Guid id, Guid authorId, [NotNull] List<PostTag> tags, [NotNull] List<PostCategory> categories, [NotNull] PostDetail detail)
+            : this(id, authorId, tags, categories, detail, false)
         {
 
         }
 
-        #region create
-        public static Post Create(Guid authorId)
+        public Post(Guid id, Guid authorId, [NotNull] List<PostTag> tags, [NotNull] List<PostCategory> categories, [NotNull] PostDetail detail, bool autoSetSlug)
+            : base(id)
         {
             Check.NotNull(authorId, nameof(authorId));
-            return new Post()
+            AuthorId = authorId;
+            SetTags(tags);
+            SetCategories(categories);
+            SetDetail(detail);
+            if (autoSetSlug)
             {
-                AuthorId = authorId,
-            };
-        }
-
-        public static Post Create(Guid authorId, long parentId)
-        {
-            var post = Create(authorId);
-            post.SetParentId(parentId);
-            return post;
-        }
-
-        public static Post Create(Guid authorId, long parentId, [NotNull] string slug)
-        {
-            var post = Create(authorId);
-            post.SetParentId(parentId);
-            post.SetSlug(slug);
-            return post;
-        }
-        #endregion
-
-        public void SetParentId(long parentId)
-        {
-            if (parentId <= 0)
-            {
-                throw new ArgumentException("the id of parent post can not less than or equal zero.");
+                SetSlug(detail.Title);
             }
+        }
+
+        public void SetParentId(Guid parentId)
+        {
+            Check.NotNull(parentId, nameof(parentId));
             ParentId = parentId;
         }
 
@@ -98,7 +83,7 @@ namespace BlogStore.Posts
         {
             if (Published || PublishedAt.HasValue)
             {
-                throw new BusinessException(BlogStoreDomainErrorCodes.PostAlreadyPublished, "The post has already published.");
+                throw new UserFriendlyException(BlogStoreDomainErrorCodes.PostAlreadyPublished, "The post had already published.");
             }
 
             Published = true;

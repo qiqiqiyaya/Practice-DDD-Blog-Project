@@ -5,6 +5,6 @@ namespace BlogStore.Posts
 {
     public interface IPostManager : IDomainService
     {
-        Task<bool> CreateAsync(Post post);
+        Task<Post> CreateAsync(Post post);
     }
 }

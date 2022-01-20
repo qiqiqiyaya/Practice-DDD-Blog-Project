@@ -4,12 +4,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlogStore.Posts
 {
-    public class CreatePostDto
+    public class CreateUpdatePostDto
     {
         [Required(AllowEmptyStrings = !PostConsts.AuthorIdRequired)]
         public Guid AuthorId { get; set; }
-
-        public long? ParentId { get; set; }
+        
+        public Guid? ParentId { get; set; }
+        
+        [Required]
+        public bool AutoSetSlug { get; set; }
 
         /// <summary>
         /// the post slug to from the URL.
@@ -21,7 +24,7 @@ namespace BlogStore.Posts
         /// detail
         /// </summary>
         [Required(AllowEmptyStrings = !PostConsts.PostDetailRequired)]
-        public CreatePostDetailDto PostDetail { get; set; }
+        public CreateUpdatePostDetailDto PostDetail { get; set; }
 
         /// <summary>
         /// Is publishing?
@@ -30,9 +33,9 @@ namespace BlogStore.Posts
         public bool Published { get; set; }
         
         [Required(AllowEmptyStrings = !PostConsts.PostTagsRequired)]
-        public List<long> PostTags { get; set; }
+        public List<Guid> Tags { get; set; }
         
         [Required(AllowEmptyStrings = !PostConsts.PostCategoriesRequired)]
-        public List<long> PostCategories { get; set; }
+        public List<Guid> Categories { get; set; }
     }
 }

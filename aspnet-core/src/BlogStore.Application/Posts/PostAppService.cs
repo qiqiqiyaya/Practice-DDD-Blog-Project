@@ -1,42 +1,49 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using BlogStore.Tags;
+using Volo.Abp.Guids;
 
 namespace BlogStore.Posts
 {
     public class PostAppService : BlogStoreAppService, IPostAppService
     {
-        private IPostManager _manager;
-        public PostAppService(IPostManager manager)
+        private readonly IPostManager _manager;
+        private readonly IGuidGenerator _guidGenerator;
+        private readonly ITagManager _tagManager;
+
+        public PostAppService(IPostManager manager,
+            ITagManager tagManager,
+            IGuidGenerator guidGenerator)
         {
+            _tagManager = tagManager;
             _manager = manager;
+            _guidGenerator = guidGenerator;
         }
 
-        public async Task<bool> CreateAsync(CreatePostDto dto)
+        public async Task<bool> CreateAsync(CreateUpdatePostDto dto)
         {
-            var detail = GetPostDetail(dto.PostDetail);
-            var post = dto.ParentId.HasValue ?
-                Post.Create(dto.AuthorId, dto.ParentId.Value)
-                : Post.Create(dto.AuthorId);
+            var detail = CreatePostDetail(dto.PostDetail);
 
-            post.SetDetail(detail);
+            var tags = dto.Tags.Select(s => new PostTag(s)).ToList();
+            var categories = dto.Categories.Select(s => new PostCategory(s)).ToList();
+
+            var post = dto.AutoSetSlug
+                ? new Post(_guidGenerator.Create(), dto.AuthorId, tags, categories, detail, true)
+                : new Post(_guidGenerator.Create(), dto.AuthorId, tags, categories, detail);
+
             if (dto.Published)
             {
                 post.Publishing();
             }
 
-            var categories = dto.PostCategories.Select(PostCategory.Create).ToList();
-            post.SetCategories(categories);
 
-            var tags = dto.PostTags.Select(PostTag.Create).ToList();
-            post.SetTags(tags);
-
-            post.SetSlug(dto.Slug);
-            return await _manager.CreateAsync(post);
+            await _manager.CreateAsync(post);
+            return true;
         }
 
-        protected PostDetail GetPostDetail(CreatePostDetailDto dto)
+        protected PostDetail CreatePostDetail(CreateUpdatePostDetailDto dto)
         {
-            var detail = PostDetail.Create(dto.Title, dto.Content);
+            var detail = new PostDetail(dto.Title, dto.Content);
             detail.SetMetaTitle(dto.MetaTitle);
             detail.SetSummary(dto.Summary);
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Volo.Abp;
 using Volo.Abp.Domain.Values;
-using Volo.Abp.Validation;
 
 namespace BlogStore.Posts
 {
@@ -10,29 +10,17 @@ namespace BlogStore.Posts
     /// </summary>
     public class PostCategory : ValueObject
     {
-        public long CategoryId { get; private set; }
+        public Guid CategoryId { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return CategoryId;
         }
 
-        protected PostCategory()
+        public PostCategory(Guid categoryId)
         {
-
-        }
-
-        public static PostCategory Create(long categoryId)
-        {
-            if (categoryId <= 0)
-            {
-                throw new ArgumentException("the id of category can not less than or equal zero.");
-            }
-
-            return new PostCategory()
-            {
-                CategoryId = categoryId
-            };
+            Check.NotNull(categoryId, nameof(categoryId));
+            CategoryId = categoryId;
         }
     }
 }

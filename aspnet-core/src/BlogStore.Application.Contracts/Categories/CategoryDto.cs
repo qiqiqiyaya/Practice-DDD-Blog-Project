@@ -3,7 +3,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace BlogStore.Categories
 {
-    public class CategoryDto : ExtensibleFullAuditedEntityDto<Guid>
+    public class CategoryDto : EntityDto<Guid>
     {
         public Guid? ParentId { get; set; }
 

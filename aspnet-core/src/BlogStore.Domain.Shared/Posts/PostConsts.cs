@@ -12,6 +12,6 @@ namespace BlogStore.Posts
         public const bool PostTagsRequired = true;
         public const bool PostCategoriesRequired = true;
 
-        public const int SlugMaxStringLength = 20;
+        public const int SlugMaxStringLength = 50;
     }
 }

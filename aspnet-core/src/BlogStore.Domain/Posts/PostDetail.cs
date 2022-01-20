@@ -24,37 +24,25 @@ namespace BlogStore.Posts
 
         public Guid? TenantId { get; }
 
-        protected PostDetail()
+        public PostDetail([NotNull] string title, [NotNull] string content)
         {
-
-        }
-
-        public static PostDetail Create([NotNull]string title,[NotNull] string content)
-        {
-            if (string.IsNullOrWhiteSpace(title))
-            {
-                throw new BusinessException(BlogStoreDomainErrorCodes.PostDetailMustHaveTitle, "Detail of post must have title.");
-            }
-            if (string.IsNullOrWhiteSpace(content))
-            {
-                throw new BusinessException(BlogStoreDomainErrorCodes.PostDetailMustHaveContent, "Detail of post must have content.");
-            }
-
-            var detail = new PostDetail();
-            detail.SetTitle(title);
-            detail.SetContent(content);
-            return detail;
+            SetTitle(title);
+            SetContent(content);
         }
 
         public void SetTitle([NotNull] string title)
         {
-            Check.NotNull(title, nameof(title));
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                throw new UserFriendlyException(BlogStoreDomainErrorCodes.PostDetailMustHaveTitle, "The title is required.");
+            }
+
             Title = title;
         }
 
         public void SetMetaTitle(string metaTitle)
         {
-            Title = metaTitle;
+            MetaTitle = metaTitle;
         }
 
         public void SetSummary(string summary)
@@ -64,7 +52,11 @@ namespace BlogStore.Posts
 
         public void SetContent([NotNull] string content)
         {
-            Check.NotNull(content, nameof(content));
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                throw new UserFriendlyException(BlogStoreDomainErrorCodes.PostDetailMustHaveContent, "The content is required.");
+            }
+
             Content = content;
         }
     }

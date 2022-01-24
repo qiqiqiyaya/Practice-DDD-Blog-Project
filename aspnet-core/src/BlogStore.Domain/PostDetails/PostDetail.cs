@@ -1,12 +1,12 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using System;
 using Volo.Abp;
-using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace BlogStore.Posts
+namespace BlogStore.PostDetails
 {
-    public class PostDetail : Entity<long>, IMultiTenant
+    public class PostDetail : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
         public string Title { get; private set; }
 
@@ -23,6 +23,11 @@ namespace BlogStore.Posts
         public string Content { get; private set; }
 
         public Guid? TenantId { get; }
+
+        /// <summary>
+        /// the post
+        /// </summary>
+        public Guid PostId { get; set; }
 
         public PostDetail([NotNull] string title, [NotNull] string content)
         {

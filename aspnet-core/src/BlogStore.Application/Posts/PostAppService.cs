@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using BlogStore.PostDetails;
 using BlogStore.Tags;
 using Volo.Abp.Guids;
 
@@ -20,7 +21,7 @@ namespace BlogStore.Posts
             _guidGenerator = guidGenerator;
         }
 
-        public async Task<bool> CreateAsync(CreateUpdatePostDto dto)
+        public async Task CreateAsync(CreatePostDto dto)
         {
             var detail = CreatePostDetail(dto.PostDetail);
 
@@ -36,12 +37,10 @@ namespace BlogStore.Posts
                 post.Publishing();
             }
 
-
             await _manager.CreateAsync(post);
-            return true;
         }
 
-        protected PostDetail CreatePostDetail(CreateUpdatePostDetailDto dto)
+        protected PostDetail CreatePostDetail(CreatePostDetailDto dto)
         {
             var detail = new PostDetail(dto.Title, dto.Content);
             detail.SetMetaTitle(dto.MetaTitle);

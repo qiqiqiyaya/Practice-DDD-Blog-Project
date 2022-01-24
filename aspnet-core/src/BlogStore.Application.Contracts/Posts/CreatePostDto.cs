@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlogStore.Posts
 {
-    public class CreateUpdatePostDto
+    public class CreatePostDto
     {
         [Required(AllowEmptyStrings = !PostConsts.AuthorIdRequired)]
         public Guid AuthorId { get; set; }
@@ -24,7 +24,7 @@ namespace BlogStore.Posts
         /// detail
         /// </summary>
         [Required(AllowEmptyStrings = !PostConsts.PostDetailRequired)]
-        public CreateUpdatePostDetailDto PostDetail { get; set; }
+        public CreatePostDetailDto PostDetail { get; set; }
 
         /// <summary>
         /// Is publishing?

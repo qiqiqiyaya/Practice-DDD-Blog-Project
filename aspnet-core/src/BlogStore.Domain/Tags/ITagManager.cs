@@ -15,5 +15,12 @@ namespace BlogStore.Tags
         Task<List<Tag>> GetListAsync(List<Guid> guids);
 
         Task<List<Tag>> GetListAsync(int skipCount, int maxResultCount, string filter = null);
+
+        /// <summary>
+        /// is exists?
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        Task<bool> IsExistsAsync(params Guid[] ids);
     }
 }

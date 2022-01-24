@@ -7,7 +7,7 @@ namespace BlogStore.Posts
 {
     public class PostTag : ValueObject
     {
-        public Post Post { get; set; }
+        public Guid PostId { get; set; }
 
         public Guid TagId { get; private set; }
 
@@ -16,10 +16,12 @@ namespace BlogStore.Posts
             yield return TagId;
         }
 
-        public PostTag(Guid tagId)
+        public PostTag(Guid tagId,Guid postId)
         {
             Check.NotNull(tagId,nameof(tagId));
+            Check.NotNull(postId,nameof(postId));
             TagId = tagId;
+            PostId = postId;
         }
 
     }

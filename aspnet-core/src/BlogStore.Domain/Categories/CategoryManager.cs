@@ -76,5 +76,16 @@ namespace BlogStore.Categories
 
             return entities;
         }
+
+        /// <summary>
+        /// is exists?
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public async Task<bool> IsExistsAsync(params Guid[] ids)
+        {
+            var count = await _categoryRepository.CountAsync(x => ids.Contains(x.Id));
+            return count == ids.Length;
+        }
     }
 }

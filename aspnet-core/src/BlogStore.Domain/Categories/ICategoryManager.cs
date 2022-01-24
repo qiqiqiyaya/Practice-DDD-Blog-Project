@@ -15,5 +15,12 @@ namespace BlogStore.Categories
         Task<List<Category>> GetListAsync(List<Guid> guids);
 
         Task<List<Category>> GetListAsync(int skipCount, int maxResultCount, string filter = null);
+
+        /// <summary>
+        /// is exists?
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        Task<bool> IsExistsAsync(params Guid[] ids);
     }
 }

@@ -29,12 +29,7 @@ namespace BlogStore.Tags
 
         public async Task<TagDto> UpdateAsync([NotNull] TagDto input)
         {
-            if (!input.Id.HasValue)
-            {
-                throw new ArgumentNullException(nameof(input.Id));
-            }
-
-            var tag = await _tagManager.GetAsync(input.Id.Value);
+            var tag = await _tagManager.GetAsync(input.Id);
             SetValue(input, tag);
             tag.SetTitle(input.Title);
 

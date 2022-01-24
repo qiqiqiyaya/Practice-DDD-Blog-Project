@@ -1,6 +1,8 @@
 ﻿using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using BlogStore.Domain.Utils;
+using BlogStore.PostDetails;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
@@ -25,12 +27,12 @@ namespace BlogStore.Posts
 
         public DateTime? PublishedAt { get; private set; }
 
-        public Guid? TenantId { get; }
+        public Guid? TenantId { get; private set; }
 
         /// <summary>
-        /// detail
+        /// post detail
         /// </summary>
-        public PostDetail PostDetail { get; private set; }
+        public Guid PostDetail { get; private set; }
 
         /// <summary>
         /// tag of post
@@ -73,7 +75,7 @@ namespace BlogStore.Posts
         public void SetSlug([NotNull] string slug)
         {
             Check.NotNullOrWhiteSpace(slug, nameof(slug));
-            Slug = slug;
+            Slug = SlugHelper.GenerateSlug(slug);
         }
 
         /// <summary>

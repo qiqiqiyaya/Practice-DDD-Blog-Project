@@ -5,6 +5,6 @@ namespace BlogStore.Posts
 {
     public interface IPostAppService : IApplicationService
     {
-        Task<bool> CreateAsync(CreateUpdatePostDto dto);
+        Task CreateAsync(CreatePostDto dto);
     }
 }

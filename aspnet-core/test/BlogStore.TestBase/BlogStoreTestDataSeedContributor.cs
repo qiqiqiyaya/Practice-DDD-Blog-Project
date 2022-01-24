@@ -6,9 +6,10 @@ namespace BlogStore
 {
     public class BlogStoreTestDataSeedContributor : IDataSeedContributor, ITransientDependency
     {
-        public async Task SeedAsync(DataSeedContext context)
+        public Task SeedAsync(DataSeedContext context)
         {
             /* Seed additional test data... */
+            return Task.CompletedTask;
         }
     }
 }

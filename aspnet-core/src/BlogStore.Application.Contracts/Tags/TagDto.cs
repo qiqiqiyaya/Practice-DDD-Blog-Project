@@ -1,12 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Volo.Abp.Application.Dtos;
 
 namespace BlogStore.Tags
 {
-    public class TagDto
+    public class TagDto:EntityDto<Guid>
     {
-        public Guid? Id { get; set; }
-
         [Required]
         [StringLength(TagConsts.TitleMaxStringLength)]
         public string Title { get; set; }
